@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -14,8 +14,12 @@ import Geolocation from '@react-native-community/geolocation';
 import storage from '@react-native-firebase/storage';
 import database from '@react-native-firebase/database';
 import styles from './style';
+import {UserContext} from './../../context';
+
 const CameraModal = (props) => {
   let camera;
+  const [token] = useContext(UserContext);
+
   const [path, setPath] = useState('');
   const [name, setName] = useState('');
   const [downloadPath, setDownloadPath] = useState('');
@@ -27,14 +31,31 @@ const CameraModal = (props) => {
     Geolocation.getCurrentPosition((info) => setCoor(info.coords));
   }, []);
 
+  const sendNotif = async () => {
+    await fetch('https://fcm.googleapis.com/fcm/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer AAAAtrdtfAU:APA91bHzxVzs_sRDAV9-OchZlDtMDYrFPU0Wi2g-iERwTJWJ9CcmBQOqLf3QnkxSrnaeXXk8ZOuN6TEXQpy6cAit7_h0wfOkbpwMAq7FpRA1vYHGCnKWeKDypCKHFDAdz3Lhitwd3bdg',
+      },
+      body: JSON.stringify({
+        to: token,
+        data: {
+          title: 'Berhasil.',
+          body: 'Image berhasil diupload!',
+        },
+      }),
+    });
+  };
+
   const takePicture = async () => {
     if (camera) {
       const options = {quality: 0.5, base64: true};
       const data = await camera.takePictureAsync(options);
-      console.log(data);
       setPath(data);
       const name = data.uri.split('/');
-      console.log('🚀 ~ file: index.js ~ line 34 ~ takePicture ~ name', name);
       setName(name[name.length - 1]);
     }
   };
@@ -73,6 +94,7 @@ const CameraModal = (props) => {
         lat: coor.latitude,
         lng: coor.longitude,
       });
+      await sendNotif();
     } catch (e) {
       console.error(e);
     }

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   TouchableOpacity,
   View,
@@ -11,6 +11,9 @@ import Header from './../../component/header';
 import styles from './style';
 import Entypo from 'react-native-vector-icons/Entypo';
 import database from '@react-native-firebase/database';
+import messaging from '@react-native-firebase/messaging';
+import {UserContext} from './../../context';
+import notifee from '@notifee/react-native';
 
 const ImageItem = (props) => {
   return (
@@ -28,10 +31,52 @@ const ImageItem = (props) => {
 };
 const Home = (props) => {
   const [data, setData] = useState([]);
+  const [token, setToken] = useContext(UserContext);
   useEffect(() => {
+    registerDevice();
     requestPermission();
     readData();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      onDisplayNotification(remoteMessage);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  async function onDisplayNotification(props) {
+    console.log(
+      '🚀 ~ file: index.js ~ line 51 ~ onDisplayNotification ~ props',
+      props,
+    );
+    // Create a channel
+    const channelId = await notifee.createChannel({
+      id: 'upload',
+      name: 'upload Channel',
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: props.data.title,
+      body: props.data.body,
+      android: {
+        channelId,
+        smallIcon: 'ic-launcher', // optional, defaults to 'ic_launcher'.
+      },
+    });
+  }
+
+  const registerDevice = async () => {
+    // Register the device with FCM
+    await messaging().registerDeviceForRemoteMessages();
+
+    // Get the token
+    const token = await messaging().getToken();
+    setToken(token);
+  };
   const requestPermission = async () => {
     try {
       await PermissionsAndroid.requestMultiple([
