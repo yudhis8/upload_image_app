@@ -987,11 +987,6 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@notifee/react-native@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@notifee/react-native/-/react-native-1.1.0.tgz#d43b076133a0e87c03ecf45caf246fdc561c8664"
-  integrity sha512-qnU/KGsq8m9CrXeEr6QnKL52WP/VLgpBjb6DnbUJlgTp2nwFWIrYdFmqzbDnFrqUbtyBspmtvn7Kto+SuyerUg==
-
 "@react-native-community/cli-debugger-ui@^4.13.1":
   version "4.13.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.13.1.tgz#07de6d4dab80ec49231de1f1fbf658b4ad39b32c"
@@ -4621,7 +4616,7 @@ lodash.throttle@^4.1.1:
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
   integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
-lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.3.0:
+lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.3.0:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
@@ -5851,6 +5846,13 @@ react-native-camera@^3.42.0:
   integrity sha512-DFsZeRy9TKP/pGef5iLX1AWxP9eAnlbGcA76fEoFXse6EP56sdgjYe+wudJsGZ//arGrYBqjq6wog13HMsJaoQ==
   dependencies:
     prop-types "^15.6.2"
+
+react-native-firebase-push-notifications@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/react-native-firebase-push-notifications/-/react-native-firebase-push-notifications-0.0.12.tgz#a4b8637a51416ee3d60390e0e28ca947d9007640"
+  integrity sha512-Q4eEZtmflSKpGzcGQUn/AMxRzsQA0NV4zTdu8XEv+uHc42mHBIKuBlWpX4u0mxIC6q53D9tEFtVMDSIdzYOoLA==
+  dependencies:
+    lodash "^4.17.11"
 
 react-native-gesture-handler@^1.9.0:
   version "1.9.0"

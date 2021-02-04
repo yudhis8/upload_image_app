@@ -13,6 +13,7 @@ import {RNCamera} from 'react-native-camera';
 import Geolocation from '@react-native-community/geolocation';
 import storage from '@react-native-firebase/storage';
 import database from '@react-native-firebase/database';
+import messaging from '@react-native-firebase/messaging';
 import styles from './style';
 import {UserContext} from './../../context';
 
@@ -32,6 +33,16 @@ const CameraModal = (props) => {
   }, []);
 
   const sendNotif = async () => {
+    // messaging()
+    //   .sendMessage({
+    //     to: token,
+    //     notification: {
+    //       title: 'Berhasil.',
+    //       body: 'Image berhasil diupload!',
+    //     },
+    //   })
+    //   .then((data) => console.log(data))
+    //   .catch((err) => console.log(err));
     await fetch('https://fcm.googleapis.com/fcm/send', {
       method: 'POST',
       headers: {

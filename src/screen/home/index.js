@@ -13,7 +13,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import database from '@react-native-firebase/database';
 import messaging from '@react-native-firebase/messaging';
 import {UserContext} from './../../context';
-import notifee from '@notifee/react-native';
+import {
+  notifications,
+  NotificationMessage,
+  Android,
+} from 'react-native-firebase-push-notifications';
 
 const ImageItem = (props) => {
   return (
@@ -49,24 +53,24 @@ const Home = (props) => {
 
   async function onDisplayNotification(props) {
     console.log(
-      '🚀 ~ file: index.js ~ line 51 ~ onDisplayNotification ~ props',
+      '🚀 ~ file: index.js ~ line 55 ~ onDisplayNotification ~ props',
       props,
     );
-    // Create a channel
-    const channelId = await notifee.createChannel({
-      id: 'upload',
-      name: 'upload Channel',
-    });
+    const channel = new Android.Channel(
+      'upload-channel',
+      'Upload Channel',
+      Android.Importance.Max,
+    ).setDescription('My apps upload channel');
 
-    // Display a notification
-    await notifee.displayNotification({
-      title: props.data.title,
-      body: props.data.body,
-      android: {
-        channelId,
-        smallIcon: 'ic-launcher', // optional, defaults to 'ic_launcher'.
-      },
-    });
+    // for android create the channel
+    notifications.android().createChannel(channel);
+    await notifications.displayNotification(
+      new NotificationMessage()
+        .setNotificationId(props.messageId)
+        .setTitle(props.data.title)
+        .setBody(props.data.body)
+        .android.setChannelId('upload-channel'), //required for android
+    );
   }
 
   const registerDevice = async () => {
@@ -75,6 +79,10 @@ const Home = (props) => {
 
     // Get the token
     const token = await messaging().getToken();
+    console.log(
+      '🚀 ~ file: index.js ~ line 78 ~ registerDevice ~ token',
+      token,
+    );
     setToken(token);
   };
   const requestPermission = async () => {
